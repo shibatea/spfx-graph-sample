@@ -10,6 +10,13 @@ This is where you include your WebPart documentation.
 - yo@3.1.1
 - @microsoft/generator-sharepoint@1.10.0
 
+### Docker Image
+
+- Docker Hub
+  - https://hub.docker.com/r/orivers/spfx
+- Tag
+  - 1.10.0
+
 ### Building the code
 
 ```bash
