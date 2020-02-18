@@ -1,17 +1,18 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
-import { Version } from '@microsoft/sp-core-library';
+import {Version} from '@microsoft/sp-core-library';
 import {
   IPropertyPaneConfiguration,
   PropertyPaneTextField
 } from '@microsoft/sp-property-pane';
-import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
+import {BaseClientSideWebPart} from '@microsoft/sp-webpart-base';
 
 import * as strings from 'GraphSampleWebPartStrings';
 import GraphSample from './components/GraphSample';
-import { IGraphSampleProps } from './components/IGraphSampleProps';
+import {IGraphSampleProps} from './components/IGraphSampleProps';
 
-import { MSGraphClient } from '@microsoft/sp-http';
+import {MSGraphClient} from '@microsoft/sp-http';
+import {sp} from "@pnp/sp";
 
 export interface IGraphSampleWebPartProps {
   description: string;
@@ -20,14 +21,23 @@ export interface IGraphSampleWebPartProps {
 export default class GraphSampleWebPart extends BaseClientSideWebPart<IGraphSampleWebPartProps> {
   private graphClient: MSGraphClient;
 
-  public onInit(): Promise<void> {
-    return new Promise<void>((resolve: () => void, reject: (error: any) => void): void => {
-      this.context.msGraphClientFactory
-        .getClient()
-        .then((client: MSGraphClient): void => {
-          this.graphClient = client;
-          resolve();
-        }, err => reject(err));
+  // public onInit(): Promise<void> {
+  //   return new Promise<void>((resolve: () => void, reject: (error: any) => void): void => {
+  //     this.context.msGraphClientFactory
+  //       .getClient()
+  //       .then((client: MSGraphClient): void => {
+  //         this.graphClient = client;
+  //         resolve();
+  //       }, err => reject(err));
+  //   });
+  // }
+
+  protected async onInit(): Promise<void> {
+    await super.onInit();
+
+    // setup
+    sp.setup({
+      spfxContext: this.context
     });
   }
 
@@ -36,7 +46,7 @@ export default class GraphSampleWebPart extends BaseClientSideWebPart<IGraphSamp
       GraphSample,
       {
         description: this.properties.description,
-        graphClient: this.graphClient
+        // graphClient: this.graphClient
       }
     );
 
